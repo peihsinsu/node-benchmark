@@ -1,0 +1,37 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: node-test
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# processname: node-test
+# chkconfig: 345 20 80
+# Description: test nodejs service
+### END INIT INFO
+
+export PATH=/opt/node/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+export APP=/root/test/bin/www
+export NODE_ENV=production
+
+case $1 in
+start)
+				forever stop $APP
+        forever start $APP
+        ;;
+stop)
+				forever stop $APP
+        ;;
+restart)
+				forever restart $APP
+        ;;
+status)
+				forever list
+        ;;
+log)
+				tail -f `forever logs --no-colors | grep $APP | awk '{print $4}'`
+        ;;
+*)
+				echo "Usage /etc/init.d/noauth [start|stop|statuslrestart|log]"
+esac
+exit 0
